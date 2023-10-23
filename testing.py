@@ -1,6 +1,6 @@
 import requests
 
-url = "http://127.0.0.1:5000/detect"
+url = "http://127.0.0.1:5000/api/detect"
 
 # Specify the image path here
 image_path = "p1.jpg"
