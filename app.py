@@ -1,11 +1,15 @@
-from flask import Flask
+import time
 
-from detection import detection
+from detection import ObjectDetection
+# from camera import get_image
 
-app = Flask(__name__)
-app.register_blueprint(detection, url_prefix='/api')
+ins = ObjectDetection()
 
+while True:
+    img_path = "p1.jpg"
 
+    res = ins.detect(image=img_path)
+    print(res)
+    time.sleep(5)
 
-if __name__ == '__main__':
-    app.run()
+    
