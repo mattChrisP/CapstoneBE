@@ -17,21 +17,12 @@ while True:
         break
     
     # get_image()
-    img_path = f"obj{4}.jpg"
+    img_path = f"obj{3}.jpg"
     image = cv2.imread(img_path)
 
-    res = ins.detect(image=img_path)
+    res = ins.detect(img_path)
 
     # Mapping the center of phone coordinate back to image
-    coord = res.get("cell_phone_centers", None)
-    if coord:
-        for i in coord:
-            cv2.circle(image, (i[0],i[1]), radius=5, color=(0, 255, 0), thickness=-1)
-            cv2.imwrite(img_path, image)
-
-
     print(res)
     time.sleep(5)
     cnt += 1
-
-    
