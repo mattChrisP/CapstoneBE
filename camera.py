@@ -1,4 +1,14 @@
+import os
 
-# TODO: implement circular buffer for img to prevent excessive storage and concurrent read and write issue
-def get_image_():
-    pass
+BUFFER = 5
+img_idx = 0
+
+
+def get_image():
+    global img_idx
+    img_idx += 1
+    if img_idx == BUFFER+1:
+        img_idx = 1
+
+    os.system(f"libcamera-still -o obj{img_idx}.jpg")
+    
