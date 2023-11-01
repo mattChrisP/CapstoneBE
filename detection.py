@@ -51,9 +51,8 @@ class ObjectDetection:
                     if int(cls) == 67:  # "cell phone"
                         x_center = (xyxy[0] + xyxy[2]) / 2
                         y_center = (xyxy[1] + xyxy[3]) / 2
-                        cv2.circle(im0, (int(x_center), int(y_center)), 5, (0, 255, 0), -1)
-                        cell_phone_centers.append((x_center.item(), y_center.item()))
+                        cell_phone_centers.append((int(x_center), int(y_center)))
                         x1, y1, x2, y2 = map(int, xyxy)
                         print(f"Bounding Box for cell phone: x1: {x1}, y1: {y1}, x2: {x2}, y2: {y2}")
-
+        print(cell_phone_centers)
         return cell_phone_centers
