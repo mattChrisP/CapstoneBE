@@ -17,7 +17,7 @@ while True:
         break
     
     # get_image()
-    img_path = f"obj{3}.jpg"
+    img_path = f"obj{4}.jpg"
     image = cv2.imread(img_path)
 
     res = ins.detect(img_path)
