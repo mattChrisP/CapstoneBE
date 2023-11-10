@@ -10,5 +10,5 @@ def get_image():
     if img_idx == BUFFER+1:
         img_idx = 1
 
-    os.system(f"libcamera-still -o obj{img_idx}.jpg --width 640 --height 640")
+    os.system(f"libcamera-still -o obj{img_idx}.jpg --width 640 --height 640 --rotation 180")
     
