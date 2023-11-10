@@ -25,7 +25,7 @@ class ObjectDetection:
         self.imgsz = check_img_size(640, s=self.stride)
 
 
-    def detect(self, img_path):
+    def detect(self, img_path, idx):
 
         cell_phone_centers = []
 
@@ -65,11 +65,11 @@ class ObjectDetection:
 
 
             # Process detections
-            cell_phone_centers += self.process_detection(pred, path, im0s, dataset, names, img)
+            cell_phone_centers += self.process_detection(pred, path, im0s, dataset, names, img, idx)
         print(f'Done. ({time.time() - t0:.3f}s)')
         return cell_phone_centers
 
-    def process_detection(self, pred, path, im0s, dataset, names, img):
+    def process_detection(self, pred, path, im0s, dataset, names, img, idx):
         cell_phone_centers = []
         for i, det in enumerate(pred):  # detections per image
             p, s, im0, frame = path, '', im0s, getattr(dataset, 'frame', 0)
@@ -82,7 +82,7 @@ class ObjectDetection:
                         x_center = (xyxy[0] + xyxy[2]) / 2
                         y_center = (xyxy[1] + xyxy[3]) / 2
                         cv2.circle(im0, (int(x_center), int(y_center)), 5, (0, 255, 0), -1)
-                        cv2.imwrite("out.jpg",im0)
+                        cv2.imwrite(f"out{idx}.jpg",im0)
                         cell_phone_centers.append((int(x_center.item()), int(y_center.item())))
 
                         x1, y1, x2, y2 = map(int, xyxy)

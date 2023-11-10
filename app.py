@@ -13,16 +13,16 @@ while True:
         idx = 1
 
     # This is for testing only, remove the cnt for prod
-    if cnt == 1:
-        break
+    # if cnt == 5:
+    #     break
     
-    # get_image()
-    img_path = f"obj{4}.jpg"
+    get_image()
+    img_path = f"obj{idx}.jpg"
     image = cv2.imread(img_path)
 
-    res = ins.detect(img_path)
+    res = ins.detect(img_path, idx)
 
     # Mapping the center of phone coordinate back to image
     print(res)
-    time.sleep(5)
+    time.sleep(2)
     cnt += 1
