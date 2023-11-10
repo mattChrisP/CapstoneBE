@@ -6,10 +6,11 @@ def remap_coor(x,y):
     # Define the four corners in the image
     # from the image perspective
     image_points = np.array([
-        [447., 200.], # top right (origin)
-        [456., 376.], # bottom right 
-        [261., 373.], # bottom left
-        [263., 197.], # top left
+        [459., 146.], # top right (origin)
+        [484., 339.], # bottom right 
+        [238., 336.], # bottom left
+        [258., 140.], # top left
+
         
     ], dtype=np.float32)
 
@@ -26,7 +27,7 @@ def remap_coor(x,y):
     H, _ = cv2.findHomography(image_points, real_points)
 
     # Use the homography to map any image point to a real-world point
-    image_point = np.array([312, 222, 1])
+    image_point = np.array([x, y, 1])
     real_point = np.dot(H, image_point)
     real_point = real_point / real_point[2]  # Convert to homogeneous coordinates
 
@@ -34,5 +35,6 @@ def remap_coor(x,y):
     y_real = real_point[1]
 
     print(round(x_real), round(y_real))
+    return (round(x_real), round(y_real))
 
-remap_coor(1,1)
+# remap_coor(1,1)
