@@ -3,6 +3,9 @@ import cv2
 
 from detection import ObjectDetection
 from camera import BUFFER, get_image
+from remap import remap_coor
+
+
 ins = ObjectDetection()
 cnt = 0
 
@@ -22,7 +25,10 @@ while True:
 
     res = ins.detect(img_path, idx)
 
+
     # Mapping the center of phone coordinate back to image
     print(res)
+    
+
     time.sleep(2)
     cnt += 1
