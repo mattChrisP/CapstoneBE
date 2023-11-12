@@ -6,21 +6,19 @@ def remap_coor(x,y):
     # Define the four corners in the image
     # from the image perspective
     image_points = np.array([
-        [459., 146.], # top right (origin)
-        [484., 339.], # bottom right 
-        [238., 336.], # bottom left
-        [258., 140.], # top left
-
-        
+        [476.,  59.], # top right (origin)
+        [489., 249.], # bottom right 
+        [242., 240.], # bottom left
+        [260.,  52.], # top left       
     ], dtype=np.float32)
 
     # Define the real-world coordinates of the four corners
     # Assuming the table's origin (0, 0) is the top-left corner
     real_points = np.array([
         [0, 0],       # top-right
-        [0, 16],     # bottom-right
-        [16, 16],  # bottom-left
-        [16, 0]     # top-left
+        [0, 17.5],     # bottom-right
+        [17.5, 17.5],  # bottom-left
+        [17.5, 0]     # top-left
     ], dtype=np.float32)
 
     # Compute the homography matrix
