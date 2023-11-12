@@ -1,6 +1,7 @@
 import time
 import cv2
 import serial
+import random
 
 
 from detection import ObjectDetection
@@ -23,8 +24,11 @@ ser = serial.Serial(
 
 time.sleep(2)
 
+cache = {}
+
 try:
     while True:
+        new_cache = {}
         idx += 1
         if idx == BUFFER + 1:
             idx = 1
@@ -39,24 +43,38 @@ try:
 
         res = ins.detect(img_path, idx)
 
-
         # Mapping the center of phone coordinate back to image
         print(res)
-        fin = [0, 0]
+        fin = []
         for i in res:
             print(i)
-            fin = remap_coor(i[0], i[1])
+            temp = remap_coor(i[0], i[1])
+
+            key = f"{temp[0]},{temp[1]}"
+            if key not in cache:
+                # Filter by offset size of box 
+                if 17 >= temp[0] >= 1 and 17 >= temp[1] >= 1:
+                    fin.append(temp)
+            new_cache[key] = 0
+
+        cache.clear()
+        cache = new_cache.copy()
+        new_cache.clear()
+
         print(f"Done in {time.time()-st} s")
 
-        # The string to send to the Arduino
-        data_to_send = f"{fin[0]},{fin[1]}"
+        if len(fin):
+            chosen = random.choice(fin)
+             # The string to send to the Arduino
+            data_to_send = f"{chosen[0]},{chosen[1]}"
 
-        # Check if serial is open and write data
-        if ser.isOpen():
-            ser.write(data_to_send.encode())  # Encode string to bytes
-            print(f"Sent '{data_to_send}' to Arduino.")
-        else:
-            print("Can't open serial port.")
+            # Check if serial is open and write data
+            if ser.isOpen():
+                ser.write(data_to_send.encode())  # Encode string to bytes
+                print(f"Sent '{data_to_send}' to Arduino.")
+            else:
+                print("Can't open serial port.")
+       
 
         time.sleep(0.5)
         # cnt += 1
