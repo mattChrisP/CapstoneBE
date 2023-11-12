@@ -22,6 +22,8 @@ ser = serial.Serial(
     timeout=1  # Timeout for read operations, in seconds
 )
 
+def neighbor(x,y):
+    return [(x+1,y), (x+1, y+1), (x+1, y-1), (x,y), (x,y+1), (x, y-1), (x-1,y+1), (x-1,y), (x-1,y-1)]
 time.sleep(2)
 
 cache = {}
@@ -55,7 +57,10 @@ try:
                 # Filter by offset size of box 
                 if 17 >= temp[0] >= 1 and 17 >= temp[1] >= 1:
                     fin.append(temp)
-            new_cache[key] = 0
+
+            for i in neighbor(temp[0], temp[1]):
+                key = f"{i[0]},{i[1]}"
+                new_cache[key] = 0
 
         cache.clear()
         cache = new_cache.copy()
@@ -79,6 +84,16 @@ try:
         time.sleep(0.5)
         # cnt += 1
 except KeyboardInterrupt:
+    # Reset to origin
+    data_to_send = f"{0},{0}"
+
+    # Check if serial is open and write data
+    if ser.isOpen():
+        ser.write(data_to_send.encode())  # Encode string to bytes
+        print(f"Sent '{data_to_send}' to Arduino.")
+    else:
+        print("Can't open serial port.")
+    time.sleep(0.5)
     ser.close()
     print("Gracefully exiting the program...")
 
