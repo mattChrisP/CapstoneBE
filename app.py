@@ -81,7 +81,7 @@ try:
                 print("Can't open serial port.")
        
 
-        time.sleep(0.5)
+        time.sleep(1)
         # cnt += 1
 except KeyboardInterrupt:
     # Reset to origin
