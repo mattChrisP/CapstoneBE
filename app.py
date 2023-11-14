@@ -17,8 +17,8 @@ ins = ObjectDetection()
 idx = 0
 
 ser = serial.Serial(
-    port='/dev/ttyUSB0',  # Replace with the correct USB port for the Arduino
-    baudrate=9600,
+    port='/dev/ttyACM0',  # Replace with the correct USB port for the Arduino
+    baudrate=115200,
     timeout=1  # Timeout for read operations, in seconds
 )
 
