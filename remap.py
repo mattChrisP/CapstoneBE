@@ -6,10 +6,10 @@ def remap_coor(x,y):
     # Define the four corners in the image
     # from the image perspective
     image_points = np.array([
-        [348., 113.], # top right (origin)
-        [356., 297.], # bottom right
-        [109., 300.], # bottom left
-        [135., 112.], # top left
+        [331., 100.], # top right (origin)
+        [341., 288.], # bottom right
+        [ 91., 292.], # bottom left
+        [116., 100.], # top left
     ], dtype=np.float32)
 
     # Define the real-world coordinates of the four corners
