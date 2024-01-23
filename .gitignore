@@ -1,3 +1,6 @@
 *.pyc
 __pycache__/
 yolov7.pt
+obj*.jpg
+out*.jpg
+test.py
