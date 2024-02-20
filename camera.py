@@ -1,16 +1,16 @@
 import os
 
-BUFFER = 5
+BUFFER = 1
 img_idx = 0
 
 
-def get_image(camera_device):
+def get_image(camera_device, id):
     global img_idx
     img_idx += 1
     if img_idx == BUFFER+1:
         img_idx = 1
 
-    os.system(f"fswebcam -d /dev/video0 -r 1280x720 --no-banner test.jpg")
+    os.system(f"fswebcam -d {camera_device} -r 800x600 --no-banner obj{img_idx}cam{id}.jpg")
 
 
 # Example usage
