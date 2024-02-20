@@ -17,7 +17,7 @@ def select_point(event, x, y, flags, param):
             complete = True
 
 # Load the image
-image = cv2.imread('obj1.jpg')
+image = cv2.imread('obj1cam1.jpg')
 if image is None:
     print("Failed to load image")
     exit()
