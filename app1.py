@@ -6,7 +6,7 @@ import random
 
 from detection import ObjectDetection
 from camera import BUFFER, get_image
-from remap import remap_coor
+from remap1 import remap_coor
 
 
 ins = ObjectDetection()
@@ -39,8 +39,8 @@ try:
         # if cnt == 5:
         #     break
         st = time.time()
-        get_image(CAMID)
-        img_path = f"obj{idx}CAM{CAMID}.jpg"
+        get_image(CAMID, 1)
+        img_path = f"obj{idx}cam1.jpg"
         image = cv2.imread(img_path)
 
         res = ins.detect(img_path, idx, CAMID)
