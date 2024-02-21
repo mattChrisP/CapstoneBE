@@ -16,11 +16,11 @@ ins = ObjectDetection()
 CAMID = "/dev/video0"
 idx = 0
 
-# ser = serial.Serial(
-#     port='/dev/ttyACM0',  # Replace with the correct USB port for the Arduino
-#     baudrate=115200,
-#     timeout=1  # Timeout for read operations, in seconds
-# )
+ser = serial.Serial(
+    port='/dev/ttyACM0',  # Replace with the correct USB port for the Arduino
+    baudrate=115200,
+    timeout=1  # Timeout for read operations, in seconds
+)
 
 def neighbor(x,y):
     return [(x+1,y), (x+1, y+1), (x+1, y-1), (x,y), (x,y+1), (x, y-1), (x-1,y+1), (x-1,y), (x-1,y-1)]
@@ -43,7 +43,7 @@ try:
         img_path = f"obj{idx}cam1.jpg"
         image = cv2.imread(img_path)
 
-        res = ins.detect(img_path, idx, CAMID)
+        res = ins.detect(img_path, idx, 1)
 
         # Mapping the center of phone coordinate back to image
         print(res)
@@ -68,17 +68,17 @@ try:
 
         print(f"Done in {time.time()-st} s")
 
-        # if len(fin):
-        #     chosen = random.choice(fin)
-        #     # The string to send to the Arduino
-        #     data_to_send = f"{chosen[0]},{chosen[1]}"
+        if len(fin):
+            chosen = random.choice(fin)
+            # The string to send to the Arduino
+            data_to_send = f"{chosen[0]},{chosen[1]}"
 
-        #     # Check if serial is open and write data
-        #     if ser.isOpen():
-        #         ser.write(data_to_send.encode())  # Encode string to bytes
-        #         print(f"Sent '{data_to_send}' to Arduino.")
-        #     else:
-        #         print("Can't open serial port.")
+            # Check if serial is open and write data
+            if ser.isOpen():
+                ser.write(data_to_send.encode())  # Encode string to bytes
+                print(f"Sent '{data_to_send}' to Arduino.")
+            else:
+                print("Can't open serial port.")
 
 
         time.sleep(0.5)
@@ -87,12 +87,12 @@ except KeyboardInterrupt:
     # Reset to origin
     data_to_send = f"{0},{0}"
 
-    # # Check if serial is open and write data
-    # if ser.isOpen():
-    #     ser.write(data_to_send.encode())  # Encode string to bytes
-    #     print(f"Sent '{data_to_send}' to Arduino.")
-    # else:
-    #     print("Can't open serial port.")
-    # time.sleep(0.5)
-    # ser.close()`
+    # Check if serial is open and write data
+    if ser.isOpen():
+        ser.write(data_to_send.encode())  # Encode string to bytes
+        print(f"Sent '{data_to_send}' to Arduino.")
+    else:
+        print("Can't open serial port.")
+    time.sleep(0.5)
+    ser.close()
     print("Gracefully exiting the program...")
