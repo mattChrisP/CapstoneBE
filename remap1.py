@@ -11,10 +11,10 @@ def remap_coor(x,y):
     # bottom-left
     # top-left
     image_points = np.array([
-        [540.,  37.],
-        [548., 364.],
-        [242., 383.],
-        [239., 107.]
+        [444., 161.],
+        [443., 313.],
+        [ 77., 321.],
+        [ 76., 104.]
     ], dtype=np.float32)
 
     # Define the real-world coordinates of the four corners
@@ -25,10 +25,10 @@ def remap_coor(x,y):
     # bottom-left
     # top-left
     real_points = np.array([
-        [0, 0],
-        [0, 11],
-        [25, 11],
-        [25,  0]
+        [0, 25],
+        [11, 25],
+        [11, 0],
+        [0,  0]
     ], dtype=np.float32)
 
     # Compute the homography matrix
