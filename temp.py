@@ -1,13 +1,13 @@
 import serial
 import time
 ser = serial.Serial(
-    port='/dev/ttyACM0',  # Replace with the correct USB port for the Arduino
+    port='/dev/ttyACM1',  # Replace with the correct USB port for the Arduino
     baudrate=115200,
     timeout=1  # Timeout for read operations, in seconds
 )
-time.sleep(4)
+time.sleep(2)
 
-data_to_send = f"0,10"
+data_to_send = f"3,5"
 
 # Check if serial is open and write data
 if ser.isOpen():

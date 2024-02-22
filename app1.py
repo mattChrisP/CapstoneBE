@@ -55,7 +55,7 @@ try:
             key = f"{temp[0]},{temp[1]}"
             if key not in cache:
                 # Filter by offset size of box 
-                if 25 >= temp[0] >= 1 and 11 >= temp[1] >= 1:
+                if 11 >= temp[0] >= 1 and 25 >= temp[1] >= 1:
                     fin.append(temp)
 
             for i in neighbor(temp[0], temp[1]):
@@ -71,7 +71,7 @@ try:
         if len(fin):
             chosen = random.choice(fin)
             # The string to send to the Arduino
-            data_to_send = f"{chosen[1]},{chosen[0]}"
+            data_to_send = f"{chosen[0]},{chosen[1]}"
 
             # Check if serial is open and write data
             if ser.isOpen():
