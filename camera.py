@@ -1,6 +1,6 @@
 import os
 
-BUFFER = 3
+BUFFER = 1
 img_idx = 0
 
 
@@ -11,6 +11,8 @@ def get_image(camera_device, id):
         img_idx = 1
 
     os.system(f"fswebcam -d {camera_device} -r 800x600 --no-banner obj{img_idx}cam{id}.jpg")
+    
+
 
 
 # Example usage
