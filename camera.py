@@ -1,6 +1,6 @@
 import os
 
-BUFFER = 3
+BUFFER = 1
 img_idx = 0
 
 
