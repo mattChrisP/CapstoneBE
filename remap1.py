@@ -11,10 +11,10 @@ def remap_coor(x,y):
     # bottom-left
     # top-left
     image_points = np.array([
-        [354., 130.],
-        [350., 248.],
-        [ 58., 256.],
-        [ 58.,  83.]
+        [417., 357.],
+        [433., 465.],
+        [178., 402.],
+        [197., 284.]
 
     ], dtype=np.float32)
 
@@ -26,10 +26,10 @@ def remap_coor(x,y):
     # bottom-left
     # top-left
     real_points = np.array([
-        [0, 25],
         [11, 25],
-        [11, 0],
-        [0,  0]
+        [0, 25],
+        [0, 0],
+        [11,  0]
     ], dtype=np.float32)
 
     # Compute the homography matrix
