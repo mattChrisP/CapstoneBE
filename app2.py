@@ -16,11 +16,11 @@ ins = ObjectDetection()
 CAMID = "/dev/video2"
 idx = 0
 
-# ser = serial.Serial(
-#     port='/dev/ttyACM1',  # Replace with the correct USB port for the Arduino
-#     baudrate=115200,
-#     timeout=1  # Timeout for read operations, in seconds
-# )
+ser = serial.Serial(
+    port='/dev/ttyACM1',  # Replace with the correct USB port for the Arduino
+    baudrate=115200,
+    timeout=1  # Timeout for read operations, in seconds
+)
 
 def neighbor(x,y):
     return [(x+1,y), (x+1, y+1), (x+1, y-1), (x,y), (x,y+1), (x, y-1), (x-1,y+1), (x-1,y), (x-1,y-1)]
@@ -43,7 +43,7 @@ try:
         img_path = f"obj{idx}cam2.jpg"
         image = cv2.imread(img_path)
 
-        res = ins.detect(img_path, idx, CAMID)
+        res = ins.detect(img_path, idx, 2)
 
         # Mapping the center of phone coordinate back to image
         print(res)
@@ -55,7 +55,7 @@ try:
             key = f"{temp[0]},{temp[1]}"
             if key not in cache:
                 # Filter by offset size of box 
-                if 17 >= temp[0] >= 1 and 17 >= temp[1] >= 1:
+                if 25 >= temp[0] >= 1 and 11 >= temp[1] >= 1:
                     fin.append(temp)
 
             for i in neighbor(temp[0], temp[1]):
@@ -71,14 +71,14 @@ try:
         if len(fin):
             chosen = random.choice(fin)
             # The string to send to the Arduino
-            data_to_send = f"{chosen[0]},{chosen[1]}"
+            data_to_send = f"{chosen[1]},{chosen[0]}"
 
             # # Check if serial is open and write data
-            # if ser.isOpen():
-            #     ser.write(data_to_send.encode())  # Encode string to bytes
-            #     print(f"Sent '{data_to_send}' to Arduino.")
-            # else:
-            #     print("Can't open serial port.")
+            if ser.isOpen():
+                ser.write(data_to_send.encode())  # Encode string to bytes
+                print(f"Sent '{data_to_send}' to Arduino.")
+            else:
+                print("Can't open serial port.")
 
 
         time.sleep(0.5)
@@ -88,11 +88,11 @@ except KeyboardInterrupt:
     data_to_send = f"{0},{0}"
 
     # # Check if serial is open and write data
-    # if ser.isOpen():
-    #     ser.write(data_to_send.encode())  # Encode string to bytes
-    #     print(f"Sent '{data_to_send}' to Arduino.")
-    # else:
-    #     print("Can't open serial port.")
-    # time.sleep(0.5)
-    # ser.close()
+    if ser.isOpen():
+        ser.write(data_to_send.encode())  # Encode string to bytes
+        print(f"Sent '{data_to_send}' to Arduino.")
+    else:
+        print("Can't open serial port.")
+    time.sleep(0.5)
+    ser.close()
     print("Gracefully exiting the program...")

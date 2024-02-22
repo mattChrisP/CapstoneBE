@@ -61,7 +61,7 @@ class ObjectDetection:
             with torch.no_grad():   # Calculating gradients would cause a GPU memory leak
                 pred = self.model(img, augment=False)[0]
             # Apply NMS
-            pred = non_max_suppression(pred, 0.25, 0.45, classes=None, agnostic=False)
+            pred = non_max_suppression(pred, 0.1, 0.45, classes=None, agnostic=False)
 
 
             # Process detections
