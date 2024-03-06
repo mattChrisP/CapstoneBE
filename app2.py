@@ -17,7 +17,7 @@ CAMID = "/dev/video2"
 idx = 0
 
 ser = serial.Serial(
-    port='/dev/ttyACM1',  # Replace with the correct USB port for the Arduino
+    port='/dev/ttyUSB1',  # Replace with the correct USB port for the Arduino
     baudrate=115200,
     timeout=1  # Timeout for read operations, in seconds
 )
