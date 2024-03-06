@@ -20,7 +20,7 @@ class ObjectDetection:
         self.device = select_device()
 
         # Load model
-        self.model = attempt_load("yolov7-tiny.pt", map_location=self.device)  # load FP32 model
+        self.model = attempt_load("yolov7.pt", map_location=self.device)  # load FP32 model
         self.stride = int(self.model.stride.max())
         self.imgsz = check_img_size(640, s=self.stride)
 
@@ -61,7 +61,7 @@ class ObjectDetection:
             with torch.no_grad():   # Calculating gradients would cause a GPU memory leak
                 pred = self.model(img, augment=False)[0]
             # Apply NMS
-            pred = non_max_suppression(pred, 0.1, 0.45, classes=None, agnostic=False)
+            pred = non_max_suppression(pred, 0.25, 0.45, classes=None, agnostic=False)
 
 
             # Process detections
