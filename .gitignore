@@ -5,3 +5,4 @@ obj*.jpg
 out*.jpg
 test.py
 intellidesk-174c9-firebase-adminsdk-garkf-abe9a9fb75.json
+*.pt
