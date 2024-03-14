@@ -4,7 +4,7 @@ import serial
 import random
 
 
-from testing import ObjectDetection
+from detection import ObjectDetection
 from camera import BUFFER, get_image
 from remap1 import remap_coor
 
