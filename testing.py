@@ -5,13 +5,29 @@ from pathlib import Path
 import cv2
 import torch
 
-from models9.common import DetectMultiBackend
-from utils9.dataloaders import LoadImages
-from utils9.general import (check_img_size, non_max_suppression, scale_coords, set_logging)
-from utils9.torch_utils import select_device, smart_inference_mode
+from models.common import DetectMultiBackend
+from utils.dataloaders import LoadImages
+from utils.general import (check_img_size, non_max_suppression, set_logging)
+from utils.torch_utils import select_device, smart_inference_mode
+
+def scale_coords(img1_shape, coords, img0_shape):
+    # Extract only height and width for the gain calculation
+    gain = min(img1_shape[0] / img0_shape[0], img1_shape[1] / img0_shape[1])  # gain = old / new
+    pad_x = (img1_shape[1] - img0_shape[1] * gain) / 2  # calculate padding for x
+    pad_y = (img1_shape[0] - img0_shape[0] * gain) / 2  # calculate padding for y
+    
+    coords[:, [0, 2]] -= pad_x  # adjust x coordinates (left and right)
+    coords[:, [1, 3]] -= pad_y  # adjust y coordinates (top and bottom)
+    coords[:, :4] /= gain  # scale coordinates
+    coords[:, :4] = coords[:, :4].round()  # round to nearest integer
+    
+    return coords
+
+
+
 
 class ObjectDetection:
-    def __init__(self, weights='yolov9-c.pt', imgsz=640, conf_thres=0.25, iou_thres=0.45):
+    def __init__(self, weights='gelan-c.pt', imgsz=640, conf_thres=0.25, iou_thres=0.45):
         set_logging()
         self.device = select_device()
         self.imgsz = check_img_size(imgsz, s=32)  # YOLOv9 might use different strides; adjust as necessary
@@ -33,7 +49,7 @@ class ObjectDetection:
 
         # Run inference
         t0 = time.time()
-        for path, img, im0s, vid_cap in dataset:
+        for path, img, im0s, _,_ in dataset:
             img = torch.from_numpy(img).to(self.device)
             img = img.float()  # uint8 to fp16/32
             img /= 255.0  # 0 - 255 to 0.0 - 1.0
@@ -57,7 +73,9 @@ class ObjectDetection:
         for i, det in enumerate(pred):  # detections per image
             if len(det):
                 # Rescale boxes from img_size to im0 size
-                det[:, :4] = scale_coords(im0s.shape[2:], det[:, :4], im0s.shape).round()
+                print(det, im0s.shape, "this is det and shape")
+                det[:, :4] = scale_coords([self.imgsz, self.imgsz], det[:, :4], im0s.shape[:2])
+
 
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
