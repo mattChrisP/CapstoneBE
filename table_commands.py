@@ -1,15 +1,16 @@
 
-import serial
+# import serial
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
+import time
 
 
-ser = serial.Serial(
-    port='/dev/ttyACM1',  # Replace with the correct USB port for the Arduino
-    baudrate=115200,
-    timeout=1  # Timeout for read operations, in seconds
-)
+# ser = serial.Serial(
+#     port='/dev/ttyACM1',  # Replace with the correct USB port for the Arduino
+#     baudrate=115200,
+#     timeout=1  # Timeout for read operations, in seconds
+# )
 
 
 def initialize_firebase():
@@ -24,11 +25,11 @@ def send_to_arduino(val):
     data_to_send = f"{val}"
 
     # Check if serial is open and write data
-    if ser.isOpen():
-        ser.write(data_to_send.encode())  # Encode string to bytes
-        print(f"Sent '{data_to_send}' to Arduino.")
-    else:
-        print("Can't open serial port.")
+    # if ser.isOpen():
+    #     ser.write(data_to_send.encode())  # Encode string to bytes
+    #     print(f"Sent '{data_to_send}' to Arduino.")
+    # else:
+    #     print("Can't open serial port.")
     pass
 # Define a callback function to handle changes in HeightValue
 def on_height_value_change(event):
@@ -44,6 +45,13 @@ db = initialize_firebase()
 # Now set up a listener on the 'HeightValue' node
 height_value_ref = db.child('Controls').child('HeightValue')
 height_value_ref.listen(on_height_value_change)
+
+# Keep the script running indefinitely
+try:
+    while True:
+        time.sleep(1)
+except KeyboardInterrupt:
+    print("Program terminated by user")
 
 
 
