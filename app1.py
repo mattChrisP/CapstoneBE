@@ -4,7 +4,7 @@ import serial
 import random
 
 
-from detection import ObjectDetection
+from testing import ObjectDetection
 from camera import BUFFER, get_image
 from remap1 import remap_coor
 
@@ -51,11 +51,19 @@ try:
         for i in res:
             print(i)
             temp = remap_coor(i[0], i[1])
-
+            
+            # Moveable from 0-11 for x-axis
+            temp[0] -= 2
             key = f"{temp[0]},{temp[1]}"
             if key not in cache:
                 # Filter by offset size of box 
-                if 11 >= temp[0] >= 1 and 25 >= temp[1] >= 1:
+                
+                
+                if 13 >= temp[0] >= -1 and 25 >= temp[1] >= 1:
+                    if temp[0] < 0:
+                        temp[0] = 0
+                    if temp[0] > 11:
+                        temp[0] = 11
                     fin.append(temp)
 
             for i in neighbor(temp[0], temp[1]):

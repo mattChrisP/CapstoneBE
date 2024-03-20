@@ -33,6 +33,6 @@ def remap_coor(x,y):
     y_real = real_point[1]
 
     print(round(x_real), round(y_real))
-    return (round(x_real), round(y_real))
+    return [round(x_real), round(y_real)]
 
 # remap_coor(1,1)
