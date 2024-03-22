@@ -11,7 +11,7 @@ def remap_coor(x,y):
     # bottom-left
     # top-left
     image_points = np.array([
-              [473., 380.],
+        [473., 380.],
         [515., 539.],
         [181., 467.],
         [199., 304.]
@@ -27,8 +27,8 @@ def remap_coor(x,y):
     # top-left
     real_points = np.array([
         [0, 25],
-        [15, 25],
-        [15, 0],
+        [11, 25],
+        [11, 0],
         [0,  0]
     ], dtype=np.float32)
 

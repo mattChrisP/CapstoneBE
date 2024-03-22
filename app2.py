@@ -51,8 +51,6 @@ try:
         for i in res:
             print(i)
             temp = remap_coor(i[0], i[1])
-
-
             # Moveable from 0-11 for x-axis
             temp[0] -= 2
             key = f"{temp[0]},{temp[1]}"

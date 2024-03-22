@@ -16,8 +16,8 @@ def remap_coor(x,y):
     # Assuming the table's origin (0, 0) is the top-left corner
     real_points = np.array([
         [0, 0],
-        [15, 0],
-        [15, 25],
+        [11, 0],
+        [11, 25],
         [0,  25]
     ], dtype=np.float32)
 
