@@ -59,7 +59,7 @@ try:
                 # Filter by offset size of box 
                 
                 
-                if 13 >= temp[0] >= -1 and 25 >= temp[1] >= 1:
+                if 13 >= temp[0] >= -1 and 25 >= temp[1] >= 0:
                     if temp[0] < 0:
                         temp[0] = 0
                     if temp[0] > 11:
@@ -89,7 +89,7 @@ try:
                 print("Can't open serial port.")
 
 
-        time.sleep(0.5)
+        time.sleep(10)
         # cnt += 1
 except KeyboardInterrupt:
     # Reset to origin
