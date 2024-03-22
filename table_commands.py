@@ -49,7 +49,7 @@ height_value_ref.listen(on_height_value_change)
 # Keep the script running indefinitely
 try:
     while True:
-        time.sleep(1)
+        pass
 except KeyboardInterrupt:
     print("Program terminated by user")
 
