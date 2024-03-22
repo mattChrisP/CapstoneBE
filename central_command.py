@@ -1,6 +1,7 @@
 # This is controller.py
 import subprocess
 import time
+import threading
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
@@ -29,39 +30,47 @@ def on_wireless_charger_status_change(event):
     print(f"WirelessCharging status has changed to: {wireless_charger_status}")
 
 
+def handle_process_output(process, script_name):
+    """Handle all output (standard output and standard error) of each script in real-time."""
+    while True:
+        output = process.stdout.readline()
+        if output == '' and process.poll() is not None:
+            break
+        if output:
+            print(f"{script_name}: {output.strip()}")
+    process.stdout.close()
+
 def run_scripts():
     global processes
-    ## List of paths to the worker scripts
     worker_scripts = ['app1.py', 'app2.py']
-    # List to keep track of the subprocesses for each worker script
-    
-
-    # Start all the worker scripts
     for script in worker_scripts:
         print(f"Starting {script}")
-        process = subprocess.Popen(['python', script], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # Note the stderr=subprocess.STDOUT here
+        process = subprocess.Popen(['python', script], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1, text=True)
         processes.append(process)
+        
+        # Start a thread for handling the combined output and errors
+        output_thread = threading.Thread(target=handle_process_output, args=(process, script))
+        output_thread.start()
 
 
 def terminate_scripts():
     global processes
-
-    # Terminate all the worker scripts
     for process in processes:
         print("Terminating a worker script")
         process.terminate()
 
-    # Wait for all the worker scripts to terminate and print their output
-    for process in processes:
-        process.wait()  # Wait for the process to terminate
-        output, errors = process.communicate()  # Get the output and errors
-        if output:
-            print("Worker output:", output.decode())
-        if errors:
-            print("Worker errors:", errors.decode())
+    # # Now wait for all scripts to terminate after issuing the terminate command
+    # for process in processes:
+    #     process.wait()  # Wait for the process to terminate
+    #     output, errors = process.communicate()  # Collect final output and errors if any
+    #     if output:
+    #         print("Worker output:", output)
+    #     if errors:
+    #         print("Worker errors:", errors)
 
-    processes = []
-    
+    processes = []  # Clear the list of processes after all have been terminated
+
 
 # Initialize the database reference
 db = initialize_firebase()
