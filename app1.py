@@ -59,11 +59,11 @@ try:
                 # Filter by offset size of box 
                 
                 
-                if 13 >= temp[0] >= -1 and 25 >= temp[1] >= 0:
+                if 17 >= temp[0] >= -1 and 25 >= temp[1] >= 0:
                     if temp[0] < 0:
                         temp[0] = 0
-                    if temp[0] > 11:
-                        temp[0] = 11
+                    if temp[0] > 15:
+                        temp[0] = 15
                     fin.append(temp)
 
             for i in neighbor(temp[0], temp[1]):
