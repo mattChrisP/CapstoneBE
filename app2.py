@@ -9,6 +9,9 @@ from camera import BUFFER, get_image
 from remap2 import remap_coor
 
 
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
 
 def clear_buffers():
     if ser.isOpen():
@@ -20,10 +23,17 @@ def clear_buffers():
 
 ins = ObjectDetection(conf_thres = 0.05)
 
+wireless_charger_status = False
+
+def terminate_script():
+    global should_continue
+    # should_continue = False
+    pass  
+
+
 # For debug purpose only uncomment this one
 # cnt = 0
-CAMID = "/dev/video2"
-idx = 0
+
 
 ser = serial.Serial(
     port='/dev/ttyUSB0',  # Replace with the correct USB port for the Arduino
@@ -43,10 +53,15 @@ def neighbor(x,y):
     return [(x+1,y), (x+1, y+1), (x+1, y-1), (x,y), (x,y+1), (x, y-1), (x-1,y+1), (x-1,y), (x-1,y-1)]
 time.sleep(2)
 
-cache = {}
 
-try:
-    while True:
+should_continue = True
+
+def run_script():
+    global ins, should_continue
+    CAMID = "/dev/video2"
+    idx = 0
+    cache = {}
+    while should_continue:
         new_cache = {}
         idx += 1
         if idx == BUFFER + 1:
@@ -105,7 +120,34 @@ try:
 
 
         time.sleep(10)
-        # cnt += 1
+
+def on_wireless_charger_status_change(event):
+    global wireless_charger_status
+    wireless_charger_status = True if event.data else False
+    if wireless_charger_status:
+        run_script()
+    else:
+        terminate_script()
+    print(f"WirelessCharging status has changed to: {wireless_charger_status}")
+
+def initialize_firebase():
+    # Assuming you've already downloaded your Firebase service account key
+    cred = credentials.Certificate("intellidesk-174c9-firebase-adminsdk-garkf-abe9a9fb75.json")
+    firebase_admin.initialize_app(cred, {
+        'databaseURL': "https://intellidesk-174c9-default-rtdb.asia-southeast1.firebasedatabase.app/"
+    })
+    return db.reference()
+
+# Initialize the database reference
+db = initialize_firebase()
+
+# Setting up the listener
+wireless_charging_ref = db.child('Controls').child('ChargingCamera')
+wireless_charging_ref.listen(on_wireless_charger_status_change) 
+
+try:
+    while True:
+        pass
 except KeyboardInterrupt:
     # Reset to origin
     data_to_send = f"{0},{0}"
