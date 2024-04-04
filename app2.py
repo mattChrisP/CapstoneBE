@@ -22,6 +22,14 @@ ser = serial.Serial(
     timeout=1  # Timeout for read operations, in seconds
 )
 
+def clear_buffers():
+    if ser.isOpen():
+        ser.flushInput()  # Clear input buffer
+        ser.flushOutput() # Clear output buffer
+        print("Serial buffers cleared.")
+    else:
+        print("Serial port is not open.")
+
 def neighbor(x,y):
     return [(x+1,y), (x+1, y+1), (x+1, y-1), (x,y), (x,y+1), (x, y-1), (x-1,y+1), (x-1,y), (x-1,y-1)]
 time.sleep(2)
@@ -80,6 +88,7 @@ try:
 
             # # Check if serial is open and write data
             if ser.isOpen():
+                clear_buffers()
                 ser.write(data_to_send.encode())  # Encode string to bytes
                 print(f"Sent '{data_to_send}' to Arduino.")
             else:
@@ -94,6 +103,7 @@ except KeyboardInterrupt:
 
     # # Check if serial is open and write data
     if ser.isOpen():
+        clear_buffers()
         ser.write(data_to_send.encode())  # Encode string to bytes
         print(f"Sent '{data_to_send}' to Arduino.")
     else:

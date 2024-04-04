@@ -9,6 +9,10 @@ from camera import BUFFER, get_image
 from remap1 import remap_coor
 
 
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+
 ins = ObjectDetection()
 
 # For debug purpose only uncomment this one
@@ -22,13 +26,50 @@ ser = serial.Serial(
     timeout=1  # Timeout for read operations, in seconds
 )
 
+def clear_buffers():
+    if ser.isOpen():
+        ser.flushInput()  # Clear input buffer
+        ser.flushOutput() # Clear output buffer
+        print("Serial buffers cleared.")
+    else:
+        print("Serial port is not open.")
+
 def neighbor(x,y):
     return [(x+1,y), (x+1, y+1), (x+1, y-1), (x,y), (x,y+1), (x, y-1), (x-1,y+1), (x-1,y), (x-1,y-1)]
 time.sleep(2)
 
 cache = {}
 
-try:
+
+wireless_charger_status = False
+
+def initialize_firebase():
+    # Assuming you've already downloaded your Firebase service account key
+    cred = credentials.Certificate("intellidesk-174c9-firebase-adminsdk-garkf-abe9a9fb75.json")
+    firebase_admin.initialize_app(cred, {
+        'databaseURL': "https://intellidesk-174c9-default-rtdb.asia-southeast1.firebasedatabase.app/"
+    })
+    return db.reference()
+
+def on_wireless_charger_status_change(event):
+    global wireless_charger_status
+    wireless_charger_status = True if event.data else False
+    if wireless_charger_status:
+        run_script()
+    else:
+        terminate_script()
+    print(f"WirelessCharging status has changed to: {wireless_charger_status}")
+
+
+# Initialize the database reference
+db = initialize_firebase()
+
+# Setting up the listener
+wireless_charging_ref = db.child('Controls').child('ChargingCamera')
+wireless_charging_ref.listen(on_wireless_charger_status_change) 
+
+
+def run_script():
     while True:
         new_cache = {}
         idx += 1
@@ -83,6 +124,7 @@ try:
 
             # Check if serial is open and write data
             if ser.isOpen():
+                clear_buffers()
                 ser.write(data_to_send.encode())  # Encode string to bytes
                 print(f"Sent '{data_to_send}' to Arduino.")
             else:
@@ -90,17 +132,25 @@ try:
 
 
         time.sleep(10)
-        # cnt += 1
-except KeyboardInterrupt:
+
+def terminate_script():
     # Reset to origin
     data_to_send = f"{0},{0}"
 
     # Check if serial is open and write data
     if ser.isOpen():
+        clear_buffers()
         ser.write(data_to_send.encode())  # Encode string to bytes
         print(f"Sent '{data_to_send}' to Arduino.")
     else:
         print("Can't open serial port.")
     time.sleep(0.5)
     ser.close()
-    print("Gracefully exiting the program...")
+    print("Gracefully exiting the program...")   
+
+# Keep the script running indefinitely
+try:
+    while True:
+        pass
+except KeyboardInterrupt:
+    print("Program terminated by user")
