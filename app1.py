@@ -30,7 +30,7 @@ def get_init_read(ser):
 
 
 ser = serial.Serial(
-    port='/dev/ttyUSB2',  # Replace with the correct USB port for the Arduino
+    port='/dev/ttyUSB1',  # Replace with the correct USB port for the Arduino
     baudrate=115200,
     timeout=1  # Timeout for read operations, in seconds
 )
@@ -47,7 +47,7 @@ def neighbor(x,y):
     return [(x+1,y), (x+1, y+1), (x+1, y-1), (x,y), (x,y+1), (x, y-1), (x-1,y+1), (x-1,y), (x-1,y-1)]
 time.sleep(2)
 
-ins = ObjectDetection(conf_thres = 0.05)
+ins = ObjectDetection(conf_thres = 0.1)
 
 
 wireless_charger_status = False

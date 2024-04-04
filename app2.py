@@ -21,7 +21,7 @@ def clear_buffers():
     else:
         print("Serial port is not open.")
 
-ins = ObjectDetection(conf_thres = 0.05)
+ins = ObjectDetection(conf_thres = 0.1)
 
 wireless_charger_status = False
 
