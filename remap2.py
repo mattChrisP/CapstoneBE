@@ -6,18 +6,18 @@ def remap_coor(x,y):
     # Define the four corners in the image
     # from the image perspective
     image_points = np.array([
-        [528., 309.],
-        [574., 508.],
-        [213., 605.],
-        [231., 417.]
+        [505., 245.],
+        [522., 374.],
+        [267., 446.],
+        [285., 329.]
     ], dtype=np.float32)
 
     # Define the real-world coordinates of the four corners
     # Assuming the table's origin (0, 0) is the top-left corner
     real_points = np.array([
         [0, 0],
-        [11, 0],
-        [11, 25],
+        [15, 0],
+        [15, 25],
         [0,  25]
     ], dtype=np.float32)
 
