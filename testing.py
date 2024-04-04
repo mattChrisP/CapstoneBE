@@ -27,7 +27,7 @@ def scale_coords(img1_shape, coords, img0_shape):
 
 
 class ObjectDetection:
-    def __init__(self, weights='yolov9-e.pt', imgsz=640, conf_thres=0.25, iou_thres=0.45):
+    def __init__(self, weights='gelan-c.pt', imgsz=640, conf_thres=0.005, iou_thres=0.45):
         set_logging()
         self.device = select_device()
         self.imgsz = check_img_size(imgsz, s=32)  # YOLOv9 might use different strides; adjust as necessary

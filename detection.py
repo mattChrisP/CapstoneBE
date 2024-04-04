@@ -20,7 +20,7 @@ class ObjectDetection:
         self.device = select_device()
 
         # Load model
-        self.model = attempt_load("yolov7.pt", map_location=self.device)  # load FP32 model
+        self.model = attempt_load("yolov7-tiny.pt", map_location=self.device)  # load FP32 model
         self.stride = int(self.model.stride.max())
         self.imgsz = check_img_size(640, s=self.stride)
 

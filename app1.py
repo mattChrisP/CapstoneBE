@@ -13,7 +13,21 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 
-ins = ObjectDetection()
+def clear_buffers():
+    if ser.isOpen():
+        ser.flushInput()  # Clear input buffer
+        ser.flushOutput() # Clear output buffer
+        print("Serial buffers cleared.")
+    else:
+        print("Serial port is not open.")
+
+#temp
+def get_init_read(ser):
+    init_val = ser.readline().decode().strip()
+    print("Initial value received from Arduino:", init_val)
+
+
+ins = ObjectDetection(conf_thres = 0.05)
 
 # For debug purpose only uncomment this one
 # cnt = 0
@@ -21,7 +35,7 @@ CAMID = "/dev/video0"
 idx = 0
 
 ser = serial.Serial(
-    port='/dev/ttyUSB0',  # Replace with the correct USB port for the Arduino
+    port='/dev/ttyUSB1',  # Replace with the correct USB port for the Arduino
     baudrate=115200,
     timeout=1  # Timeout for read operations, in seconds
 )
@@ -92,19 +106,16 @@ def run_script():
         for i in res:
             print(i)
             temp = remap_coor(i[0], i[1])
-            
+
+            if -2 <= temp[0] < 0:
+                temp[0] = 0
+            if 15 < temp[0] <= 17:
+                temp[0] = 15
             # Moveable from 0-11 for x-axis
-            temp[0] -= 2
             key = f"{temp[0]},{temp[1]}"
             if key not in cache:
                 # Filter by offset size of box 
-                
-                
-                if 17 >= temp[0] >= -1 and 25 >= temp[1] >= 0:
-                    if temp[0] < 0:
-                        temp[0] = 0
-                    if temp[0] > 15:
-                        temp[0] = 15
+                if 15 >= temp[0] >= 0 and 25 >= temp[1] >= 0:
                     fin.append(temp)
 
             for i in neighbor(temp[0], temp[1]):
