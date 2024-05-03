@@ -92,7 +92,8 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 * ![RabbitMQ](https://img.shields.io/static/v1?style=for-the-badge&message=RabbitMQ&color=FF6600&logo=RabbitMQ&logoColor=FFFFFF&label=)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p> -->
-
+### Simple Demo Video:
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/2_Fds3Jc2NM/0.jpg)](https://www.youtube.com/watch?v=2_Fds3Jc2NM)
 
 
 <!-- GETTING STARTED -->
