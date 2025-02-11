@@ -92,6 +92,11 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 * ![RabbitMQ](https://img.shields.io/static/v1?style=for-the-badge&message=RabbitMQ&color=FF6600&logo=RabbitMQ&logoColor=FFFFFF&label=)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p> -->
+
+## 📰 Featured in the News
+Our project has been featured in the news! Check out the article here:
+[Read the full article](https://www.zaobao.com.sg/news/singapore/story20240412-3394837)
+
 ### Simple Demo Video:
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/2_Fds3Jc2NM/0.jpg)](https://www.youtube.com/watch?v=2_Fds3Jc2NM)
 
